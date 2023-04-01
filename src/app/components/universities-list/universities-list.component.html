@@ -1,1 +1,25 @@
-<p>universities-list works!</p>
+<section>
+    <label for="search">Search</label>
+    <input type="text" name="search" id="search" [(ngModel)]="searchStr">
+</section>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th *ngFor="let headerLabels of theads">{{headerLabels}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of paginatedUniversities | UniversitySearch : searchStr">
+            <td *ngFor="let colKey of columnKeys">{{row[colKey]}}</td>
+            <td>
+                <a (click)="onFav(row)" title="{{row?.isFav ? 'Remove Fav' : 'Mark as Fav'}}">
+                    <img src="{{ row?.isFav ? '../../../assets/icons/fav.svg' : '../../../assets/icons/unfav.svg' }}"
+                        alt="Fav icon" />
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<custom-pagination [current]="current" [total]="totalPages" (goTo)="onGoTo($event)" (next)="onNext($event)"
+    (previous)="onPrevious($event)"></custom-pagination>
