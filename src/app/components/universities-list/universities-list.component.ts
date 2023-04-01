@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TABLE_COL_KEYS, TABLE_HEADERS } from 'src/app/interfacesAndConstants/constants';
+import { COUNTRIES_LIST, MARK_AS_FAV_TITLE, TABLE_COL_KEYS, TABLE_HEADERS, UNMARK_AS_FAV_TITLE } from 'src/app/interfacesAndConstants/constants';
 import { UniversitysApiService } from 'src/app/services/universitys-api.service';
 
 @Component({
@@ -14,8 +14,11 @@ export class UniversitiesListComponent implements OnInit {
 
   theads = TABLE_HEADERS;
   columnKeys = TABLE_COL_KEYS;
+  markAsFav = MARK_AS_FAV_TITLE;
+  unMarkAsFav = UNMARK_AS_FAV_TITLE;
+  countries = COUNTRIES_LIST;
 
-
+  selectedCountry: string = ''
   searchStr: string = ''
   current = 1;
   perPage = 15;
@@ -27,9 +30,38 @@ export class UniversitiesListComponent implements OnInit {
     this.cacheApiCallRes();
   }
 
-  onFav(col: any) {
+
+  async onSelectCountry(country:Event){
+    if(this.universitiesList.findIndex((coun=>{return coun.country==country}))==-1){
+     await this.cacheApiCallRes();
+      this.filterByCountry(country)
+      return;
+    }
+    this.filterByCountry(country)
+  }
+  filterByCountry(country:any){
+    let temp = localStorage.getItem('favObj') || '{}';
+    let myobj = JSON.parse(temp) || {}
+    for (const key in myobj) {
+      this.universitiesList.map(e=>{
+        if(e.name==key){
+          e.isFav= myobj[key];
+        }
+      })
+    }
+    this.universitiesList = this.universitiesList.filter(e=>{
+      return e.country == country;
+    });
+
+     this.populatePaginatedData();
+  }
+temp:any={}
+  onClickFavIcon(col: any) {
     col.isFav = !col.isFav;
-    this.updateLocalStorageValue(this.universitiesList)
+    this.temp[col['name']] = col.isFav;
+    localStorage.setItem('favObj', JSON.stringify(this.temp));
+
+    // this.updateLocalStorageValue(this.universitiesList)
   }
 
   cacheApiCallRes() {

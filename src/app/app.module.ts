@@ -5,9 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UniversitiesListComponent } from './components/universities-list/universities-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CustomPaginationComponent } from './components/custom-pagination/custom-pagination.component';
 import { SearchPipe } from './pipes/search.pipe'
 import { FormsModule } from '@angular/forms';
+import { CustomPaginationComponent } from './helpers/custom-pagination/custom-pagination.component';
 @NgModule({
   declarations: [
     AppComponent,

@@ -2,7 +2,12 @@
     <label for="search">Search</label>
     <input type="text" name="search" id="search" [(ngModel)]="searchStr">
 </section>
-
+<section>
+    <label for="search">Search by Country</label>
+    <select name="country" id="country" [ngModel]="selectedCountry"  (ngModelChange)="onSelectCountry($event)">
+            <option value="{{country}}" *ngFor="let country of countries">{{country}}</option>
+    </select>
+</section>
 <table border="1">
     <thead>
         <tr>
@@ -13,7 +18,7 @@
         <tr *ngFor="let row of paginatedUniversities | UniversitySearch : searchStr">
             <td *ngFor="let colKey of columnKeys">{{row[colKey]}}</td>
             <td>
-                <a (click)="onFav(row)" title="{{row?.isFav ? 'Remove Fav' : 'Mark as Fav'}}">
+                <a (click)="onClickFavIcon(row)" title="{{row?.isFav ? unMarkAsFav : markAsFav}}">
                     <img src="{{ row?.isFav ? '../../../assets/icons/fav.svg' : '../../../assets/icons/unfav.svg' }}"
                         alt="Fav icon" />
                 </a>
