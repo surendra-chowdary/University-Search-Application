@@ -8,7 +8,7 @@ import { UniversitysApiService } from 'src/app/services/universitys-api.service'
   styleUrls: ['./universities-list.component.scss']
 })
 export class UniversitiesListComponent implements OnInit {
-  constructor(private _universityService: UniversitysApiService) {}
+  constructor(private _universityService: UniversitysApiService) { }
   private universitiesList: any[] = []
   private localStorageKey = 'resCache';
 
@@ -18,7 +18,7 @@ export class UniversitiesListComponent implements OnInit {
   unMarkAsFav = UNMARK_AS_FAV_TITLE;
   countries = COUNTRIES_LIST;
 
-  selectedCountry: string = ''
+  selectedCountry = null;
   searchStr: string = ''
   current = 1;
   perPage = 15;
@@ -30,48 +30,10 @@ export class UniversitiesListComponent implements OnInit {
     this.cacheApiCallRes();
   }
 
-
-  async onSelectCountry(country:Event){
-    if(this.universitiesList.findIndex((coun=>{return coun.country==country}))==-1){
-     await this.cacheApiCallRes();
-      this.filterByCountry(country)
-      return;
-    }
-    this.filterByCountry(country)
-  }
-  filterByCountry(country:any){
-    // let temp = localStorage.getItem('favObj') || '{}';
-    // let myobj = JSON.parse(temp) || {}
-    // for (const key in myobj) {
-    //   this.universitiesList.map(e=>{
-    //     if(e.name==key){
-    //       e.isFav= myobj[key];
-    //     }
-    //   })
-    // }
-    // this.universitiesList.map(e=>{
-    //   if(e.country == country){
-    //     e.isShow=true
-    //   }else{
-    //     e.isShow=false
-    //   }
-    // });
-
-     this.populatePaginatedData();
-  }
-temp:any={}
-  onClickFavIcon(col: any) {
-    col.isFav = !col.isFav;
-    // this.temp[col['name']] = col.isFav;
-    // localStorage.setItem('favObj', JSON.stringify(this.temp));
-
-    this.updateLocalStorageValue(this.universitiesList)
-  }
-
   cacheApiCallRes() {
     if (localStorage.getItem(this.localStorageKey)) {
       let localstr = localStorage.getItem(this.localStorageKey) || '';
-      this.universitiesList = JSON.parse(localstr)
+      this.universitiesList = JSON.parse(localstr);
       this.populatePaginatedData();
       return;
     }
@@ -91,17 +53,29 @@ temp:any={}
   updateLocalStorageValue(value: any) {
     localStorage.setItem(this.localStorageKey, JSON.stringify(value));
   }
-  
+
   populatePaginatedData() {
-    this.totalPages = Math.ceil(this.universitiesList.length / this.perPage);
+    const filterData = this.universitiesList.filter(e => e.isShow);
+    this.totalPages = Math.ceil(filterData.length / this.perPage);
     this.paginatedUniversities = this.paginate(this.current, this.perPage);
   }
- 
- 
- 
- 
- 
- 
+
+  async onSelectCountry(country: Event) {
+    this.universitiesList.map(e => {
+      if (e.country == country) {
+        e.isShow = true
+      } else {
+        e.isShow = false
+      }
+    });
+    this.updateLocalStorageValue(this.universitiesList)
+    this.populatePaginatedData();
+  }
+  onClickFavIcon(col: any) {
+    col.isFav = !col.isFav;
+    this.updateLocalStorageValue(this.universitiesList)
+  }
+
   public onGoTo(page: number): void {
     this.current = page;
     this.paginatedUniversities = this.paginate(this.current, this.perPage);
@@ -118,10 +92,7 @@ temp:any={}
   }
 
   public paginate(current: number, perPage: number): string[] {
-    // let ary = [...this.universitiesList.slice((current - 1) * perPage).slice(0, perPage)];
-    // ary = ary.filter(e=>{
-    //   return e.isShow
-    // })
-    return  [...this.universitiesList.slice((current - 1) * perPage).slice(0, perPage)];; 
+    const filterData = this.universitiesList.filter(e => e.isShow);
+    return [...filterData.slice((current - 1) * perPage).slice(0, perPage)];;
   }
 }

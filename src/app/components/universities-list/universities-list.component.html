@@ -5,7 +5,8 @@
 <section>
     <label for="search">Search by Country</label>
     <select name="country" id="country" [ngModel]="selectedCountry"  (ngModelChange)="onSelectCountry($event)">
-            <option value="{{country}}" *ngFor="let country of countries">{{country}}</option>
+        <option [value]='null'>Select Country</option>
+        <option value="{{country}}" *ngFor="let country of countries">{{country}}</option>
     </select>
 </section>
 <table border="1">
