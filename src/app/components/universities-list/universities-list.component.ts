@@ -46,10 +46,11 @@ export class UniversitiesListComponent implements OnInit {
       this.universitiesList.map(university => { university.isShow = true })
       this.updateLocalStorageValue(this.universitiesList)
       this.populatePaginatedData();
+
     }, (err) => {
       console.log(err);
-      alert('Go to your web browser settings (Chrome) ==>site setting ==>Insecure content ==> click add button of allow, then add this url `https://universities-search.web.app` to view data on this page')
-        })
+      alert(' -----------------Instructions to view data on this page----------------- Go to your web browser settings (Chrome) ==> Privacy & Security ==> Site setting ==> Insecure content ==> click add button of allow, then add this url `https://universities-search.web.app`');
+    })
   }
 
   updateLocalStorageValue(value: any) {
