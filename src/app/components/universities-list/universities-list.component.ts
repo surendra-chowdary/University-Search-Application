@@ -61,7 +61,7 @@ export class UniversitiesListComponent implements OnInit {
     this.paginatedUniversities = this.paginate(this.current, this.perPage);
   }
 
-  async onSelectCountry(country: Event) {
+  onSelectCountry(country: Event) {
     this.universitiesList.map(e => {
       if (e.country === country) {
         e.isShow = true

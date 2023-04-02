@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TABLE_COL_KEYS } from '../interfacesAndConstants/constants';
 
 @Pipe({
   name: 'UniversitySearch'
