@@ -40,28 +40,32 @@ export class UniversitiesListComponent implements OnInit {
     this.filterByCountry(country)
   }
   filterByCountry(country:any){
-    let temp = localStorage.getItem('favObj') || '{}';
-    let myobj = JSON.parse(temp) || {}
-    for (const key in myobj) {
-      this.universitiesList.map(e=>{
-        if(e.name==key){
-          e.isFav= myobj[key];
-        }
-      })
-    }
-    this.universitiesList = this.universitiesList.filter(e=>{
-      return e.country == country;
-    });
+    // let temp = localStorage.getItem('favObj') || '{}';
+    // let myobj = JSON.parse(temp) || {}
+    // for (const key in myobj) {
+    //   this.universitiesList.map(e=>{
+    //     if(e.name==key){
+    //       e.isFav= myobj[key];
+    //     }
+    //   })
+    // }
+    // this.universitiesList.map(e=>{
+    //   if(e.country == country){
+    //     e.isShow=true
+    //   }else{
+    //     e.isShow=false
+    //   }
+    // });
 
      this.populatePaginatedData();
   }
 temp:any={}
   onClickFavIcon(col: any) {
     col.isFav = !col.isFav;
-    this.temp[col['name']] = col.isFav;
-    localStorage.setItem('favObj', JSON.stringify(this.temp));
+    // this.temp[col['name']] = col.isFav;
+    // localStorage.setItem('favObj', JSON.stringify(this.temp));
 
-    // this.updateLocalStorageValue(this.universitiesList)
+    this.updateLocalStorageValue(this.universitiesList)
   }
 
   cacheApiCallRes() {
@@ -83,13 +87,21 @@ temp:any={}
       alert(JSON.stringify(err))
     })
   }
+
   updateLocalStorageValue(value: any) {
     localStorage.setItem(this.localStorageKey, JSON.stringify(value));
   }
+  
   populatePaginatedData() {
     this.totalPages = Math.ceil(this.universitiesList.length / this.perPage);
     this.paginatedUniversities = this.paginate(this.current, this.perPage);
   }
+ 
+ 
+ 
+ 
+ 
+ 
   public onGoTo(page: number): void {
     this.current = page;
     this.paginatedUniversities = this.paginate(this.current, this.perPage);
@@ -106,6 +118,10 @@ temp:any={}
   }
 
   public paginate(current: number, perPage: number): string[] {
-    return [...this.universitiesList.slice((current - 1) * perPage).slice(0, perPage)];
+    // let ary = [...this.universitiesList.slice((current - 1) * perPage).slice(0, perPage)];
+    // ary = ary.filter(e=>{
+    //   return e.isShow
+    // })
+    return  [...this.universitiesList.slice((current - 1) * perPage).slice(0, perPage)];; 
   }
 }
