@@ -19,9 +19,9 @@ export class UniversitiesListComponent implements OnInit {
   countries = COUNTRIES_LIST;
 
   selectedCountry = null;
-  searchStr: string = ''
+  searchStr:any = null
   current = 1;
-  perPage = 15;
+  perPage = 10;
   totalPages!: number;
   paginatedUniversities: any[] = [];
 
@@ -33,7 +33,7 @@ export class UniversitiesListComponent implements OnInit {
   cacheApiCallRes() {
     if (localStorage.getItem(this.localStorageKey)) {
       this.universitiesList = JSON.parse(localStorage.getItem(this.localStorageKey) || '');
-      this.universitiesList.map(university=>{university.isShow = true})
+      this.universitiesList.map(university => { university.isShow = true })
       this.populatePaginatedData();
       return;
     }
@@ -43,7 +43,7 @@ export class UniversitiesListComponent implements OnInit {
   getUniversitiesList() {
     this._universityService.getUniversities().subscribe((universitiesListRes: any) => {
       this.universitiesList = universitiesListRes;
-      this.universitiesList.map(university=>{university.isShow = true})
+      this.universitiesList.map(university => { university.isShow = true })
       this.updateLocalStorageValue(this.universitiesList)
       this.populatePaginatedData();
     }, (err) => {
@@ -54,10 +54,14 @@ export class UniversitiesListComponent implements OnInit {
   updateLocalStorageValue(value: any) {
     localStorage.setItem(this.localStorageKey, JSON.stringify(value));
   }
-
+  availabelePages: any = []
   populatePaginatedData() {
     const filterData = this.universitiesList.filter(e => e.isShow);
     this.totalPages = Math.ceil(filterData.length / this.perPage);
+    this.availabelePages = [];
+    [...Array(this.totalPages)].forEach((e, i) => {
+      this.availabelePages.push(i + 1)
+    })
     this.paginatedUniversities = this.paginate(this.current, this.perPage);
   }
 
@@ -75,6 +79,15 @@ export class UniversitiesListComponent implements OnInit {
   onClickFavIcon(col: any) {
     col.isFav = !col.isFav;
     this.updateLocalStorageValue(this.universitiesList)
+  }
+  onSelectcurrent(val: any) {
+    this.current = val;
+    this.populatePaginatedData();
+  }
+  onSelectPerPage(val: any) {
+    this.perPage = val;
+    this.populatePaginatedData();
+
   }
 
   public onGoTo(page: number): void {

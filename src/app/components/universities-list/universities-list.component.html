@@ -1,16 +1,19 @@
 
 <div class="container">
-    <section>
-        <label for="search">Search</label>
-        <input type="text" name="search" id="search" [(ngModel)]="searchStr" (ngModelChange)="populatePaginatedData()">
-    </section>
-    <section>
-        <label for="search">Search by Country</label>
-        <select name="country" id="country" [ngModel]="selectedCountry" (ngModelChange)="onSelectCountry($event)">
-            <option [value]='null'>Select Country</option>
-            <option value="{{country}}" *ngFor="let country of countries">{{country}}</option>
-        </select>
-    </section>
+    <div class="search-bar">
+        <section>
+            <label for="search">Search</label>
+            <input class="search" placeholder="Enter value to search University" type="text" name="search" id="search" [(ngModel)]="searchStr" (ngModelChange)="populatePaginatedData()">
+        </section>
+        <section>
+            <label for="search">Search by Country</label>
+            <select class="select" name="country" id="country" [ngModel]="selectedCountry" (ngModelChange)="onSelectCountry($event)">
+                <option [value]='null'>Select Country</option>
+                <option value="{{country}}" *ngFor="let country of countries">{{country}}</option>
+            </select>
+        </section>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
@@ -21,7 +24,7 @@
             <tr class="table-row" *ngFor="let row of paginatedUniversities | UniversitySearch : searchStr">
                 <td class="table-data" *ngFor="let colKey of columnKeys">{{row[colKey]}}</td>
                 <td class="table-data">
-                    <a (click)="onClickFavIcon(row)" title="{{row?.isFav ? unMarkAsFav : markAsFav}}">
+                    <a class="icon" (click)="onClickFavIcon(row)" title="{{row?.isFav ? unMarkAsFav : markAsFav}}">
                         <img src="{{ row?.isFav ? '../../../assets/icons/fav.svg' : '../../../assets/icons/unfav.svg' }}"
                             alt="Fav icon" />
                     </a>
@@ -30,9 +33,20 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <custom-pagination [current]="current" [total]="totalPages" (goTo)="onGoTo($event)"
-                        (next)="onNext($event)" (previous)="onPrevious($event)"></custom-pagination>
+                        (next)="onNext($event)" (previous)="onPrevious($event)">
+                        <section>
+                            <label class="current-label" for="current">Select Page</label>
+                            <select class="select currentpage" name="current" id="current" [ngModel]="current" (ngModelChange)="onSelectcurrent($event)">
+                                <option [value]="page" *ngFor="let page of availabelePages">{{page}}</option>
+                            </select>
+                            <label class="current-label perPage-label" for="current">Items Per Page</label>
+                            <select class="select currentpage" name="current" id="current" [ngModel]="perPage" (ngModelChange)="onSelectPerPage($event)">
+                                <option [value]="page" *ngFor="let page of [10,15,20,25]">{{page}}</option>
+                            </select>
+                        </section>
+                    </custom-pagination>
                 </td>
             </tr>
         </tfoot>
