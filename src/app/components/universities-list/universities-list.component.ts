@@ -49,7 +49,7 @@ export class UniversitiesListComponent implements OnInit {
 
     }, (err) => {
       console.log(err);
-      alert(' -----------------Instructions to view data on this page----------------- Go to your web browser settings (Chrome) ==> Privacy & Security ==> Site setting ==> Insecure content ==> click add button of allow, then add this url `https://universities-search.web.app`');
+      alert('<<--Instructions to view data on this page-->> Go to your web browser settings (Chrome) ==> Privacy & Security ==> Site setting ==> Insecure content ==> click add button of allow, then add this url `https://universities-search.web.app`');
     })
   }
 
