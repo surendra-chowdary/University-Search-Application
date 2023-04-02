@@ -32,8 +32,8 @@ export class UniversitiesListComponent implements OnInit {
 
   cacheApiCallRes() {
     if (localStorage.getItem(this.localStorageKey)) {
-      let localstr = localStorage.getItem(this.localStorageKey) || '';
-      this.universitiesList = JSON.parse(localstr);
+      this.universitiesList = JSON.parse(localStorage.getItem(this.localStorageKey) || '');
+      this.universitiesList.map(university=>{university.isShow = true})
       this.populatePaginatedData();
       return;
     }
@@ -43,6 +43,7 @@ export class UniversitiesListComponent implements OnInit {
   getUniversitiesList() {
     this._universityService.getUniversities().subscribe((universitiesListRes: any) => {
       this.universitiesList = universitiesListRes;
+      this.universitiesList.map(university=>{university.isShow = true})
       this.updateLocalStorageValue(this.universitiesList)
       this.populatePaginatedData();
     }, (err) => {
@@ -62,7 +63,7 @@ export class UniversitiesListComponent implements OnInit {
 
   async onSelectCountry(country: Event) {
     this.universitiesList.map(e => {
-      if (e.country == country) {
+      if (e.country === country) {
         e.isShow = true
       } else {
         e.isShow = false

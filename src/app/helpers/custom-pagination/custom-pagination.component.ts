@@ -20,7 +20,7 @@ export class CustomPaginationComponent implements OnChanges {
   @Output() next: EventEmitter<number> = new EventEmitter<number>();
   @Output() previous: EventEmitter<number> = new EventEmitter<number>();
 
-  public pages: number[] = [];
+  pages: number[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -31,15 +31,15 @@ export class CustomPaginationComponent implements OnChanges {
     }
   }
 
-  public onGoTo(page: number): void {
+  onGoTo(page: number): void {
     this.goTo.emit(page);
   }
 
-  public onNext(): void {
+  onNext(): void {
     this.next.emit(this.current);
   }
 
-  public onPrevious(): void {
+  onPrevious(): void {
     this.previous.next(this.current);
   }
 
