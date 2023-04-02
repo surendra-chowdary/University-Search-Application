@@ -4,10 +4,10 @@ import { UniversitiesListComponent } from './components/universities-list/univer
 
 const routes: Routes = [
   {
-    path:'' , redirectTo: '/' , pathMatch:'full'
+    path:'' , redirectTo: '/list' , pathMatch:'full'
   },
   {
-    path: '', component: UniversitiesListComponent
+    path: 'list', component: UniversitiesListComponent
   }
 ];
 
