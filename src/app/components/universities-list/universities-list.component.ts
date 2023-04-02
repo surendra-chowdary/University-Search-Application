@@ -47,8 +47,9 @@ export class UniversitiesListComponent implements OnInit {
       this.updateLocalStorageValue(this.universitiesList)
       this.populatePaginatedData();
     }, (err) => {
-      alert(JSON.stringify(err))
-    })
+      console.log(err);
+      alert('Go to your web browser settings (Chrome) ==>site setting ==>Insecure content ==> click add button of allow, then add this url `https://universities-search.web.app` to view data on this page')
+        })
   }
 
   updateLocalStorageValue(value: any) {
